@@ -18,6 +18,7 @@ class MediaPlayerManager {
                     start()
                 }
             }
+            currentUrl=url
         }
     }
     fun pause(){
@@ -28,6 +29,8 @@ class MediaPlayerManager {
             stop()
             relese()
         }
+        mediaPlayer=null
+        currentUrl=null
     }
 
     // funciones de verificaciones

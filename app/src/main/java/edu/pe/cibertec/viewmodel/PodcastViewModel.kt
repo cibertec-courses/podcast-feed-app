@@ -13,8 +13,8 @@ import java.lang.Exception
 
 class PodcastViewModel : ViewModel(){
 
-    private val _podocasts = MutableStateFlow<List<Podcast>>(emptyList())
-    val podcasts : StateFlow<List<Podcast>> = _podocasts
+    private val _podcasts = MutableStateFlow<List<Podcast>>(emptyList())
+    val podcasts : StateFlow<List<Podcast>> = _podcasts
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -30,9 +30,6 @@ class PodcastViewModel : ViewModel(){
     val isPlaying: StateFlow<Boolean> = _isPlaying
 
 
-    init {
-        fetchPodcasts()
-    }
 
     fun playPodCast(url: String? ){
         url?.let{
@@ -56,12 +53,21 @@ class PodcastViewModel : ViewModel(){
         mediaPlayerManager.relese()
     }
 
+    init {
+        fetchPodcasts()
+    }
+
     private fun fetchPodcasts(){
         viewModelScope.launch {
             _isLoading.value = true
             try {
                 val response = RetrofitInstance.api.searchPodcast()
-                _podocasts.value = response.results
+                _podcasts.value = response.results
+                response.results.forEach { podcast ->
+                    println("trackName: ${podcast.trackName} ")
+                    println("artworkUrl: ${podcast.artWorkl100} ")
+                    println("previewURL: ${podcast.previewUrl} ")
+                }
             }catch (e: Exception){
                 e.printStackTrace()
             }finally {
