@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import edu.pe.cibertec.api.RetrofitInstance
 import edu.pe.cibertec.model.Podcast
+import edu.pe.cibertec.player.MediaPlayerManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,8 +20,40 @@ class PodcastViewModel : ViewModel(){
     val isLoading: StateFlow<Boolean> = _isLoading
 
 
+    // Agregar controlers
+    private val mediaPlayerManager = MediaPlayerManager()
+
+    private val _currentPlayingUrl = MutableStateFlow<String?>(null)
+    val currentPlayingUrl : StateFlow<String?> = _currentPlayingUrl
+
+    private val _isPlaying = MutableStateFlow(false)
+    val isPlaying: StateFlow<Boolean> = _isPlaying
+
+
     init {
         fetchPodcasts()
+    }
+
+    fun playPodCast(url: String? ){
+        url?.let{
+            mediaPlayerManager.play(it)
+            _currentPlayingUrl.value = it
+            _isPlaying.value = true
+        }
+    }
+    fun pausePodCast(){
+        mediaPlayerManager.pause()
+        _isPlaying.value = false
+    }
+    fun stopPodcast(){
+        mediaPlayerManager.stop()
+        _currentPlayingUrl.value = null
+        _isPlaying.value = false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        mediaPlayerManager.relese()
     }
 
     private fun fetchPodcasts(){

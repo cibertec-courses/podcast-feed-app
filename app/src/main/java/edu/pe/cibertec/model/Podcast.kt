@@ -7,6 +7,6 @@ data class Podcast(
     val trackName: String?,
     @SerializedName("artworkUrl160")
     val artWorkl100: String?,
-    @SerializedName("previewURL")
+    @SerializedName("previewUrl")
     val previewUrl: String?
 )
