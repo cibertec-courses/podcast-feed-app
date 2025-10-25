@@ -1,0 +1,56 @@
+# Android Studio
+/.idea/
+/*.iml
+.gradle/
+/local.properties
+/.cxx/
+/build/
+
+# User-specific files
+*.log
+*.env
+*.tmp
+
+# Android files
+*.apk
+*.ap_ 
+*.dex
+*.class
+*.jar
+*.war
+*.ear
+*.db
+*.sqlite
+
+# Gradle
+.gradle/
+# Keystore files
+*.jks
+*.keystore
+
+# Android NDK
+/local.properties
+
+# Android Studio workspace and project files
+/.idea/
+/.idea/workspace.xml
+/.idea/tasks.xml
+/.idea/libraries/
+/.idea/.name
+/.idea/modules.xml
+/.idea/vcs.xml
+
+# Gradle wrapper
+/gradle-wrapper.jar
+
+# IntelliJ IDEA
+*.iml
+.idea/
+
+# JetBrains IDEs
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+

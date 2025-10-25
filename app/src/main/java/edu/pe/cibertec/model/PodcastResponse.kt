@@ -6,5 +6,5 @@ data class PodcastResponse(
     @SerializedName("resultCount")
     val resultCount: Int,
     @SerializedName("results")
-    val result: List<Podcast>
+    val results: List<Podcast>
 )
