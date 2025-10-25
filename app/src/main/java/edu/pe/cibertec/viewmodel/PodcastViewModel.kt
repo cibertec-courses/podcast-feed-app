@@ -8,41 +8,34 @@ import edu.pe.cibertec.player.MediaPlayerManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
-
-class PodcastViewModel : ViewModel(){
+class PodcastViewModel : ViewModel() {
 
     private val _podcasts = MutableStateFlow<List<Podcast>>(emptyList())
-    val podcasts : StateFlow<List<Podcast>> = _podcasts
+    val podcasts: StateFlow<List<Podcast>> = _podcasts
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-
-    // Agregar controlers
     private val mediaPlayerManager = MediaPlayerManager()
 
     private val _currentPlayingUrl = MutableStateFlow<String?>(null)
-    val currentPlayingUrl : StateFlow<String?> = _currentPlayingUrl
+    val currentPlayingUrl: StateFlow<String?> = _currentPlayingUrl
 
     private val _isPlaying = MutableStateFlow(false)
     val isPlaying: StateFlow<Boolean> = _isPlaying
 
-
-
-    fun playPodCast(url: String? ){
-        url?.let{
+    fun playPodcast(url: String?) {
+        url?.let {
             mediaPlayerManager.play(it)
             _currentPlayingUrl.value = it
             _isPlaying.value = true
         }
     }
-    fun pausePodCast(){
+
+    fun pausePodcast() {
         mediaPlayerManager.pause()
         _isPlaying.value = false
     }
-    fun stopPodcast(){
+
+    fun stopPodcast() {
         mediaPlayerManager.stop()
         _currentPlayingUrl.value = null
         _isPlaying.value = false
@@ -50,31 +43,41 @@ class PodcastViewModel : ViewModel(){
 
     override fun onCleared() {
         super.onCleared()
-        mediaPlayerManager.relese()
+        mediaPlayerManager.release()
     }
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
 
     init {
         fetchPodcasts()
     }
 
-    private fun fetchPodcasts(){
+    private fun fetchPodcasts() {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val response = RetrofitInstance.api.searchPodcast()
+                val response = RetrofitInstance.api.searchPodcasts()
+                println("JSON Response: $response")
                 _podcasts.value = response.results
+
+                // AGREGAR ESTAS LÍNEAS AQUÍ
                 response.results.forEach { podcast ->
-                    println("trackName: ${podcast.trackName} ")
-                    println("artworkUrl: ${podcast.artWorkl100} ")
-                    println("previewURL: ${podcast.previewUrl} ")
+                    println("=== PODCAST COMPLETO ===")
+                    println("trackName: ${podcast.trackName}")
+                    println("artworkUrl100: ${podcast.artworkUrl100}")
+                    println("previewUrl: ${podcast.previewUrl}")
+                    println("========================")
                 }
-            }catch (e: Exception){
+
+            } catch (e: Exception) {
                 e.printStackTrace()
-            }finally {
+            } finally {
                 _isLoading.value = false
             }
         }
     }
+
 
 
 }
