@@ -4,42 +4,42 @@ import android.media.MediaPlayer
 
 class MediaPlayerManager {
     private var mediaPlayer: MediaPlayer? = null
-    private var currentUrl : String? = null
+    private var currentUrl: String? = null
 
-    fun play(url: String){
-        if(currentUrl == url && mediaPlayer != null){
+    fun play(url: String) {
+        if (currentUrl == url && mediaPlayer != null) {
             mediaPlayer?.start()
-        }else{
+        } else {
             stop()
-            mediaPlayer = mediaPlayer?.apply{
+            mediaPlayer = MediaPlayer().apply {
                 setDataSource(url)
                 prepareAsync()
                 setOnPreparedListener {
                     start()
                 }
             }
-            currentUrl=url
+            currentUrl = url
         }
     }
-    fun pause(){
+
+    fun pause() {
         mediaPlayer?.pause()
     }
-    fun stop(){
-        mediaPlayer?.apply{
+
+    fun stop() {
+        mediaPlayer?.apply {
             stop()
-            relese()
+            release()
         }
-        mediaPlayer=null
-        currentUrl=null
+        mediaPlayer = null
+        currentUrl = null
     }
 
-    // funciones de verificaciones
-    fun isPlaying(): Boolean{
-        return  mediaPlayer?.isPlaying ?: false
+    fun isPlaying(): Boolean {
+        return mediaPlayer?.isPlaying ?: false
     }
-    fun relese(){
+
+    fun release() {
         stop()
     }
-
-
 }
